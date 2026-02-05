@@ -1,0 +1,58 @@
+{
+    "packs": [
+        {
+            "id": "story_mode_1",
+            "name": "The Hacker's Escape",
+            "description": "Decrypt the firewall to escape the facility.",
+            "words": [
+                {
+                    "word": "PYTHON",
+                    "hint": "A serpent that swallows data whole."
+                },
+                {
+                    "word": "FIREWALL",
+                    "hint": "A burning barrier that keeps intruders out."
+                },
+                {
+                    "word": "ENCRYPTION",
+                    "hint": "Turning order into chaos to hide the truth."
+                },
+                {
+                    "word": "MAINFRAME",
+                    "hint": "The big iron brain at the center of it all."
+                },
+                {
+                    "word": "PROTOCOL",
+                    "hint": "A set of rules for diplomatic machines."
+                }
+            ]
+        },
+        {
+            "id": "tech_slang",
+            "name": "Silicon Valley Lingo",
+            "description": "Do you speak geek?",
+            "words": [
+                {
+                    "word": "ALGORITHM",
+                    "hint": "A recipe for solving a problem."
+                },
+                {
+                    "word": "DEBUG",
+                    "hint": "Removing the insects from the machine."
+                },
+                {
+                    "word": "COMPILER",
+                    "hint": "The translator from human to machine."
+                },
+                {
+                    "word": "RECURSION",
+                    "hint": "See: Recursion."
+                },
+                {
+                    "word": "FULLSTACK",
+                    "hint": "Jack of all trades, master of... both?"
+                }
+            ]
+        }
+    ]
+}

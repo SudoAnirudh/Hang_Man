@@ -1,0 +1,118 @@
+.game-canvas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 1rem;
+}
+
+.hint-display {
+    width: 100%;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-left: 3px solid var(--color-primary);
+    background: rgba(0, 255, 157, 0.05);
+}
+
+.hint-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.hint-text {
+    font-size: 1.1rem;
+    color: var(--color-text-main);
+    font-weight: 300;
+    font-style: italic;
+}
+
+.word-display {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.letter-slot {
+    width: 3rem;
+    height: 4rem;
+    border-bottom: 2px solid var(--color-text-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--color-text-main);
+    transition: all 0.2s;
+}
+
+.letter-slot.revealed {
+    border-bottom-color: var(--color-primary);
+    text-shadow: 0 0 10px var(--color-primary);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.virtual-keyboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+.key-btn {
+    aspect-ratio: 1;
+    background: var(--color-surface);
+    border: 1px solid var(--color-surface-hover);
+    color: var(--color-text-main);
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.key-btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    background: var(--color-surface-hover);
+}
+
+.key-btn.correct {
+    background: var(--color-primary-dim);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-glow-green);
+}
+
+.key-btn.wrong {
+    background: var(--color-danger-dim);
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+    /* Make letter red */
+    opacity: 0.5;
+}
+
+.key-btn:disabled {
+    cursor: not-allowed;
+    /* Keep style for correct/wrong, but dim for generic disabled */
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

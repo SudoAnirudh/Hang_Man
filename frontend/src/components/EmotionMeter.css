@@ -1,0 +1,65 @@
+.emotion-meter-container {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-surface-hover);
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+}
+
+.meter-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+}
+
+.meter-track {
+    height: 20px;
+    background: #000;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--color-surface-hover);
+}
+
+.meter-fill {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    position: relative;
+}
+
+/* Scanline effect on the meter */
+.meter-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    animation: scan 2s infinite linear;
+}
+
+.stress-readout {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-top: 0.3rem;
+}
+
+@keyframes scan {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
