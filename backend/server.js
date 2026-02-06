@@ -29,7 +29,26 @@ app.get('/health', (req, res) => {
 
 // Socket.io connection handler
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('User connected:', socket.id);
+
+  // Join a specific game room
+  socket.on('join_room', (roomId) => {
+    socket.join(roomId);
+    console.log(`User ${socket.id} joined room ${roomId}`);
+    // Notify others in room
+    socket.to(roomId).emit('player_joined', { playerId: socket.id });
+  });
+
+  // Handle attacks (Chaos Mode / Battle Mode interactions)
+  socket.on('attack_opponent', ({ roomId, attackType }) => {
+    // Broadcast attack to others in the room
+    socket.to(roomId).emit('receive_attack', { attackType, attackerId: socket.id });
+  });
+
+  // Sync score updates
+  socket.on('update_score', ({ roomId, score }) => {
+    socket.to(roomId).emit('opponent_score', { playerId: socket.id, score });
+  });
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);

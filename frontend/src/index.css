@@ -1,29 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=VT323&display=swap');
+
 :root {
-  /* Core Palette - Cybernetic/Tension */
-  --color-bg: #0a0b10;
-  --color-surface: #14161f;
-  --color-surface-hover: #1c1f2b;
-  
-  --color-primary: #00ff9d; /* Cyber Green - Safe/Go */
-  --color-primary-dim: rgba(0, 255, 157, 0.1);
-  
-  --color-danger: #ff2a2a; /* Alarm Red - Danger/Fail */
-  --color-danger-dim: rgba(255, 42, 42, 0.1);
-  
-  --color-warning: #ffb700; /* Tension/Time running out */
-  
-  --color-text-main: #e0e6ed;
-  --color-text-muted: #94a3b8;
-  
-  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace; /* For codes/ciphers */
-  
+  /* Core Palette - Cyberpunk/CRT */
+  --color-bg: #050505;
+  --color-surface: #0a0f0a;
+  --color-surface-hover: #111a11;
+  --color-surface-active: #1a2f1a;
+
+  --color-primary: #00ff41;
+  /* Terminal Green */
+  --color-primary-dim: rgba(0, 255, 65, 0.1);
+  --color-primary-glow: rgba(0, 255, 65, 0.6);
+
+  --color-secondary: #00f0ff;
+  /* Cyber Blue */
+  --color-secondary-dim: rgba(0, 240, 255, 0.1);
+  --color-secondary-glow: rgba(0, 240, 255, 0.6);
+
+  --color-danger: #ff003c;
+  /* Glitch Red */
+  --color-danger-dim: rgba(255, 0, 60, 0.1);
+  --color-danger-glow: rgba(255, 0, 60, 0.6);
+
+  --color-warning: #fcee0a;
+  /* High Voltage Yellow */
+  --color-warning-dim: rgba(252, 238, 10, 0.1);
+
+  --color-text-main: #e0f0e0;
+  --color-text-muted: #6b8c6b;
+  --color-text-dim: #2f4f2f;
+
+  --font-main: 'Rajdhani', system-ui, -apple-system, sans-serif;
+  --font-mono: 'VT323', 'Courier New', monospace;
+  /* Retro Terminal */
+
+  --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 16px;
-  
-  --shadow-glow-green: 0 0 20px rgba(0, 255, 157, 0.3);
-  --shadow-glow-red: 0 0 20px rgba(255, 42, 42, 0.3);
+
+  /* Effects */
+  --shadow-glow-green: 0 0 10px var(--color-primary-glow), 0 0 20px var(--color-primary-dim);
+  --shadow-glow-blue: 0 0 10px var(--color-secondary-glow), 0 0 20px var(--color-secondary-dim);
+  --shadow-glow-red: 0 0 10px var(--color-danger-glow), 0 0 20px var(--color-danger-dim);
+
+  --scanline-color: rgba(0, 0, 0, 0.5);
+  --grid-line-color: rgba(0, 255, 65, 0.05);
 }
 
 * {
@@ -34,29 +56,159 @@
 
 body {
   background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center top;
   color: var(--color-text-main);
   font-family: var(--font-main);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* CRT Scanline Overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2));
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: bg-scan 0.1s infinite linear;
+  /* Subtle vibration */
 }
 
 /* Utilities for text */
-.font-mono { font-family: var(--font-mono); }
-.text-primary { color: var(--color-primary); }
-.text-danger { color: var(--color-danger); }
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.text-primary {
+  color: var(--color-primary);
+  text-shadow: 0 0 5px var(--color-primary-glow);
+}
+
+.text-danger {
+  color: var(--color-danger);
+  text-shadow: 0 0 5px var(--color-danger-glow);
+}
+
+.text-warning {
+  color: var(--color-warning);
+  text-shadow: 0 0 5px var(--color-warning);
+}
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--color-bg);
+  border-left: 1px solid var(--color-surface);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-surface-hover);
-  border-radius: 4px;
+  border: 1px solid var(--color-primary-dim);
+  border-radius: 0;
 }
-[::-webkit-scrollbar-thumb:hover] {
-  background: var(--color-text-muted);
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dim);
+  border-color: var(--color-primary);
+}
+
+/* Animations */
+@keyframes bg-scan {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 4px;
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.9;
+  }
+
+  5% {
+    opacity: 0.8;
+  }
+
+  10% {
+    opacity: 0.95;
+  }
+
+  15% {
+    opacity: 0.85;
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.95;
+  }
+
+  60% {
+    opacity: 0.9;
+  }
+
+  65% {
+    opacity: 0.95;
+  }
+
+  90% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+
+  20% {
+    transform: skew(-10deg);
+  }
+
+  40% {
+    transform: skew(10deg);
+  }
+
+  60% {
+    transform: skew(-5deg);
+  }
+
+  80% {
+    transform: skew(5deg);
+  }
+
+  100% {
+    transform: skew(0deg);
+  }
 }

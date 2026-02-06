@@ -2,42 +2,51 @@ import React from 'react';
 import './EmotionMeter.css';
 
 const EmotionMeter = ({ stressLevel, maxStress }) => {
-    // stressLevel starts at 0 (safe) and goes up to maxStress (explosion)
-    const percentage = Math.min((stressLevel / maxStress) * 100, 100);
+    // Determine percentage (inverse of stress)
+    const integrity = Math.max(0, 100 - (stressLevel / maxStress) * 100);
 
-    // Determine color based on stress
+    // Calculate color state
     let statusColor = 'var(--color-primary)';
     let statusText = 'STABLE';
+    let pulseClass = '';
 
-    if (percentage > 40) {
+    if (integrity < 60) {
         statusColor = 'var(--color-warning)';
-        statusText = 'UNSTABLE';
+        statusText = 'CAUTION';
+        pulseClass = 'pulse-warning';
     }
-    if (percentage > 75) {
+    if (integrity < 30) {
         statusColor = 'var(--color-danger)';
         statusText = 'CRITICAL';
+        pulseClass = 'pulse-critical';
     }
 
+    // Generate segments for the health bar
+    const totalSegments = 10;
+    const filledSegments = Math.ceil((integrity / 100) * totalSegments);
+
     return (
-        <div className="emotion-meter-container">
-            <div className="meter-label">
-                <span>CORE_INTEGRITY</span>
-                <span style={{ color: statusColor }}>{statusText}</span>
+        <div className={`emotion-meter-container ${pulseClass}`}>
+            <div className="meter-header">
+                <span className="meter-title">SYSTEM_INTEGRITY</span>
+                <span className="meter-value" style={{ color: statusColor }}>{Math.round(integrity)}%</span>
             </div>
 
-            <div className="meter-track">
-                <div
-                    className="meter-fill"
-                    style={{
-                        width: `${100 - percentage}%`, // As stress goes up, integrity goes down
-                        backgroundColor: statusColor,
-                        boxShadow: `0 0 15px ${statusColor}`
-                    }}
-                />
+            <div className="meter-segments">
+                {[...Array(totalSegments)].map((_, i) => (
+                    <div
+                        key={i}
+                        className={`segment ${i < filledSegments ? 'filled' : 'empty'}`}
+                        style={{
+                            backgroundColor: i < filledSegments ? statusColor : 'transparent',
+                            borderColor: i < filledSegments ? statusColor : 'var(--color-text-dim)'
+                        }}
+                    />
+                ))}
             </div>
 
-            <div className="stress-readout">
-                INTEGRITY: {Math.round(100 - percentage)}%
+            <div className="meter-status">
+                STATUS: <span style={{ color: statusColor }}>{statusText}</span>
             </div>
         </div>
     );

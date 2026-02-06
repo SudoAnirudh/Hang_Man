@@ -29,7 +29,7 @@ router.get('/packs', (req, res) => {
 });
 
 // GET /api/packs/:id/random - Get a random word from a specific pack
-router.get('/packs/:id/random', (req, res) => {
+router.get('/packs/:id/random', async (req, res) => {
     const { id } = req.params;
     const data = getWordData();
     const pack = data.packs.find(p => p.id === id);
@@ -40,8 +40,14 @@ router.get('/packs/:id/random', (req, res) => {
 
     const randomWord = pack.words[Math.floor(Math.random() * pack.words.length)];
 
-    // Return word and hint (masked word logic could be here if we wanted server-side validation only)
-    res.json(randomWord);
+    // Generate AI hint
+    const { generateHint } = require('../services/aiService');
+    const hint = await generateHint(randomWord);
+
+    res.json({
+        word: randomWord,
+        hint: hint
+    });
 });
 
 module.exports = router;
